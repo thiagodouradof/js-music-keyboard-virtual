@@ -38,3 +38,36 @@ const showHideKeys = () => {
 volumeSlider.addEventListener("input", handleVolume);
 
 keysCheck.addEventListener("click", showHideKeys);
+
+let metronomeInterval;
+const metronomeBPMInput = document.querySelector('.metronome input');
+const toggleMetronomeButton = document.getElementById('toggle-metronome');
+let metronomeActive = false;
+
+const startMetronome = () => {
+  if (metronomeActive) return;
+  
+  const bpm = metronomeBPMInput.value;
+  const interval = 60000 / bpm;
+
+  metronomeActive = true;
+  metronomeInterval = setInterval(() => {
+    audio.src = 'src/tunes/click.wav'; // Suponha que você tenha um arquivo de clique
+    audio.play();
+  }, interval);
+  toggleMetronomeButton.textContent = 'Parar';
+};
+
+const stopMetronome = () => {
+  clearInterval(metronomeInterval);
+  metronomeActive = false;
+  toggleMetronomeButton.textContent = 'Iniciar';
+};
+
+toggleMetronomeButton.addEventListener('click', () => {
+  if (metronomeActive) {
+    stopMetronome();
+  } else {
+    startMetronome();
+  }
+});
